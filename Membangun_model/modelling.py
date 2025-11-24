@@ -5,11 +5,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 
 mlflow.set_tracking_uri("http://127.0.0.1:8080/")
-mlflow.set_experiment("Auto Logging Random Forest Classifier")
-mlflow.autolog(log_models=True)
+mlflow.set_experiment("Logging Model")
 
 with mlflow.start_run():
-    df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv")
+    mlflow.autolog(log_models=True)
+    
+    df = pd.read_csv("Membangun_model/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing.csv")
     df.head()
     
     x = df.drop(columns=['Churn'])
