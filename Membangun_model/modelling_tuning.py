@@ -4,11 +4,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import sys
+import warnings
 
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, log_loss, roc_auc_score, balanced_accuracy_score, cohen_kappa_score, confusion_matrix, classification_report
 
+
+warnings.filterwarnings("ignore")
 
 dagshub.init(repo_owner='nelsooooon', repo_name='SMSML_Nelson_Ahli', mlflow=True)
 
@@ -21,12 +25,13 @@ x = df.drop(columns=['Churn'])
 y = df['Churn']
 
 input_example = x.head(5)
+n_estimators = int(sys.argv[1]) if len(sys.argv) > 1 else 505
+max_depth = int(sys.argv[2]) if len(sys.argv) > 2 else 37
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-with mlflow.start_run():
-    model_forest = RandomForestClassifier()
-    rf = RandomForestClassifier()
+with mlflow.start_run(run_name=f"elastic_search_{n_estimators}_{max_depth}"):
+    model_forest = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
     
     param_dist = {
     'n_estimators': np.linspace(100, 500, 5, dtype=int),
