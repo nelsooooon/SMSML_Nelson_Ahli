@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/460483433484102891/f56f182949c0490285e44e50fe22ce28/artifacts
+end_time: 1763979232036
+entry_point_name: ''
+experiment_id: '460483433484102891'
+lifecycle_stage: active
+run_id: f56f182949c0490285e44e50fe22ce28
+run_name: popular-ram-844
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1763979222208
+status: 3
+tags: []
+user_id: Nelson

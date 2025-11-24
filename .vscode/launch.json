@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Modelling",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/Membangun_model/modelling.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/Membangun_model",
+            "justMyCode": true
+        }
+    ]
+}
