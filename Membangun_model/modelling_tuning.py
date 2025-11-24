@@ -69,7 +69,7 @@ with mlflow.start_run():
     plt.ylabel('Actual')
     plt.tight_layout()
     
-    plt.savefig('confusion_matrix.png', dpi=100, bbox_inches='tight')
+    plt.savefig('Membangun_model/artifacts/confusion_matrix.png', dpi=100, bbox_inches='tight')
     plt.close()
     
     feature_importance = pd.DataFrame({
@@ -85,11 +85,11 @@ with mlflow.start_run():
     plt.gca().invert_yaxis()
     plt.tight_layout()
     
-    plt.savefig('feature_importance.png', dpi=100, bbox_inches='tight')
+    plt.savefig('Membangun_model/artifacts/feature_importance.png', dpi=100, bbox_inches='tight')
     plt.close()
     
     report = classification_report(y_test, y_pred)
-    with open('classification_report.txt', 'w') as f:
+    with open('Membangun_model/artifacts/classification_report.txt', 'w') as f:
         f.write('Classification Report\n')
         f.write('='*50 + '\n\n')
         f.write(report)
@@ -104,8 +104,8 @@ with mlflow.start_run():
     mlflow.log_metric("balanced_accuracy", balanced_acc)
     mlflow.log_metric("cohen_kappa", kappa)
     
-    mlflow.log_artifact('confusion_matrix.png')
-    mlflow.log_artifact('feature_importance.png')
-    mlflow.log_artifact('classification_report.txt')
+    mlflow.log_artifact('Membangun_model/artifacts/confusion_matrix.png')
+    mlflow.log_artifact('Membangun_model/artifacts/feature_importance.png')
+    mlflow.log_artifact('Membangun_model/artifacts/classification_report.txt')
     
     mlflow.log_params(best_params)
