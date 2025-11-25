@@ -28,5 +28,4 @@ with mlflow.start_run(run_name=f"elastic_search_{n_estimators}_{max_depth}"):
         model_forest = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
         model_forest.fit(X_train, y_train)
         
-        accuracy = model_forest.score(X_test, y_test)
-        mlflow.log_metric("accuracy", accuracy)
+        model_forest.predict(X_test)

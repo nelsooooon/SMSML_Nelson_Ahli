@@ -9,16 +9,13 @@ df = pd.read_csv("Membangun_model/WA_Fn-UseC_-Telco-Customer-Churn_preprocessing
 if 'Churn' in df.columns:
     df = df.drop(columns=['Churn'])
 
-def record_metrics(latency, prediction, confidence=None, features=None, success=True):
+def record_metrics(latency, prediction, features=None, success=True):
     try:
         payload = {
             "latency": latency,
             "prediction": str(prediction),
             "success": success
         }
-        
-        if confidence is not None:
-            payload["confidence"] = confidence
         
         if features is not None:
             payload["features"] = features
@@ -46,17 +43,14 @@ def make_inference(data):
             predictions = result.get('predictions', [])
             prediction = predictions[0] if predictions else 'unknown'
             
-            confidence = abs(float(prediction) - 0.5) * 2
-            
             record_metrics(
                 latency=response_time,
                 prediction=prediction,
-                confidence=confidence,
                 features=data,
                 success=True
             )
             
-            print(f"✓ Success - Latency: {response_time:.3f}s - Prediction: {prediction} - Confidence: {confidence:.2f}")
+            print(f"✓ Success - Latency: {response_time:.3f}s - Prediction: {prediction}")
             return result
         else:
             record_metrics(response_time, 'error', success=False)

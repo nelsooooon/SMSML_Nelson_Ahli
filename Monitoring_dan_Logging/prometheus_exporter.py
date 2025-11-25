@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, Response
 import psutil
-import time
 from prometheus_client import Counter, Histogram, Gauge, generate_latest, CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
@@ -12,7 +11,7 @@ INFERENCE_COUNT = Counter('model_inference_total', 'Total number of inference re
 INFERENCE_LATENCY = Histogram('model_inference_duration_seconds', 'Inference request latency')
 INFERENCE_PREDICTION_DISTRIBUTION = Counter('model_predictions', 'Distribution of predictions', ['prediction'])
 INFERENCE_ERRORS = Counter('model_inference_errors', 'Total number of failed inferences')
-INFERENCE_PREDICTION_CONFIDENCE = Histogram('model_prediction_confidence', 'Prediction confidence score distribution')
+INFERENCE_LATENCY_BY_PREDICTION = Histogram('model_latency_by_prediction', 'Latency grouped by prediction type', ['prediction'])
 INFERENCE_HIGH_RISK_PREDICTIONS = Counter('model_high_risk_predictions_total', 'Total high risk predictions (churn=1)')
 INFERENCE_REQUEST_RATE = Counter('model_request_rate_total', 'Total requests for rate calculation')
 INFERENCE_FEATURE_DRIFT = Gauge('model_feature_drift', 'Feature drift metrics', ['feature_name', 'metric_type'])
@@ -36,7 +35,6 @@ def inference():
     confidence = data.get('confidence', None)
     features = data.get('features', {})
     
-    # Basic metrics
     INFERENCE_COUNT.inc()
     INFERENCE_LATENCY.observe(latency)
     INFERENCE_REQUEST_RATE.inc()
@@ -44,8 +42,7 @@ def inference():
     if success:
         INFERENCE_PREDICTION_DISTRIBUTION.labels(prediction=str(prediction)).inc()
         
-        if confidence is not None:
-            INFERENCE_PREDICTION_CONFIDENCE.observe(float(confidence))
+        INFERENCE_LATENCY_BY_PREDICTION.labels(prediction=str(prediction)).observe(latency)
         
         if str(prediction) == '1':
             INFERENCE_HIGH_RISK_PREDICTIONS.inc()
@@ -59,7 +56,6 @@ def inference():
         "status": "recorded",
         "latency": latency,
         "prediction": prediction,
-        "confidence": confidence,
         "success": success
     })
 
