@@ -100,10 +100,10 @@ pip install -r Membangun_model/requirements.txt
 - seaborn==0.13.2
 
 Additional dependencies for monitoring:
-- prometheus_client
-- flask
-- psutil
-- requests
+- prometheus_client>=0.19.0
+- flask>=3.0.0
+- psutil>=5.9.0
+- requests>=2.31.0
 
 ## Usage
 
@@ -118,6 +118,9 @@ Run model training with hyperparameter tuning:
 ```bash
 python Membangun_model/modelling_tuning.py [n_estimators] [max_depth]
 ```
+
+> **Note:** Both `n_estimators` and `max_depth` are optional arguments.  
+> Default values: `n_estimators=505`, `max_depth=37`.
 
 ### Start Monitoring Stack
 
