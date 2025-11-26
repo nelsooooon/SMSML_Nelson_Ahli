@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/640812440539507469/00fece0316964cbaa8a015650b2d5d31/artifacts
+end_time: 1764138834307
+entry_point_name: ''
+experiment_id: '640812440539507469'
+lifecycle_stage: active
+run_id: 00fece0316964cbaa8a015650b2d5d31
+run_name: elastic_search_505_37
+run_uuid: 00fece0316964cbaa8a015650b2d5d31
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1764138811842
+status: 3
+tags: []
+user_id: Nelson
