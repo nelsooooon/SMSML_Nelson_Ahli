@@ -1,6 +1,6 @@
+import pandas as pd
 import requests
 import time
-import pandas as pd
 
 API_URL = "http://127.0.0.1:5005/invocations"
 INFERENCE_URL = "http://127.0.0.1:8000/inference"
@@ -26,11 +26,11 @@ def record_metrics(latency, prediction, features=None, success=True):
     
 def load_sample_data():
     sample = df.sample(n=1).iloc[0]
+    
     return sample.to_dict()
 
 def make_inference(data):
     start_time = time.time()
-    
     payload = {"instances": [data]}
     headers = {"Content-Type": "application/json"}
     
@@ -50,17 +50,21 @@ def make_inference(data):
                 success=True
             )
             
-            print(f"✓ Success - Latency: {response_time:.3f}s - Prediction: {prediction}")
+            print(f"Inference Success - Prediction: {prediction}")
+            
             return result
         else:
             record_metrics(response_time, 'error', success=False)
-            print(f"✗ Failed - Status: {response.status_code}")
+            print(f"Inference Failed - Status: {response.status_code}")
+            
             return None
         
     except Exception as e:
         response_time = time.time() - start_time
+        
         record_metrics(response_time, 'error', success=False)
-        print(f"✗ Error: {e}")
+        print(f"Inference Error - {e}")
+        
         return None
 
 def run_continuous_inference(interval=5, num_requests=100):
@@ -73,4 +77,4 @@ def run_continuous_inference(interval=5, num_requests=100):
         time.sleep(interval)
 
 if __name__ == '__main__':
-    run_continuous_inference()
+    run_continuous_inference(interval=2, num_requests=5000)
